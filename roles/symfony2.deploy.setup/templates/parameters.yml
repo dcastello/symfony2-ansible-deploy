@@ -1,0 +1,13 @@
+parameters:
+    database_driver: {{ database_driver }}
+    database_host: {{ database_host }}
+    database_port: {{ database_port }}
+    database_name: {{ database_name }}
+    database_user: {{ database_user }}
+    database_password: {{ database_password }}
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: ThisIsNotASecret
+    locale: en

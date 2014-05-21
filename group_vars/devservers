@@ -1,0 +1,15 @@
+symfony2_project_root: '/var/www/dev.example.com'
+symfony2_project_name: 'My Project'
+symfony2_project_repo: 'url to your GIT repo'
+symfony2_project_branch: master
+symfony2_project_php_path: /usr/local/bin/php
+symfony2_project_env: dev
+symfony2_project_console_opts: ''
+symfony2_project_composer_opts: ''
+database_driver: 'pdo_mysql'
+database_port: null
+database_host: 'localhost'
+database_name: 'name'
+database_user: 'user'
+database_password: 'passwd'
+ansible_ssh_user: user

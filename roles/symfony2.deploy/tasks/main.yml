@@ -1,0 +1,49 @@
+---
+# tasks file for symfony2 deploy
+- name: Register release variable
+  shell: date +%Y%m%d%H%M%S
+  register: symfony2_project_release
+
+- name: Pull sources from the repository.
+  git:
+    repo={{symfony2_project_repo}}
+    dest={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}
+    version={{symfony2_project_branch}}
+    accept_hostkey=yes
+
+- name: Ensure cache directory
+  action:
+    file dest={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}/app/cache
+    state=directory
+    mode=0777
+
+- name: Create app/logs symlink
+  file:
+    state=link
+    src={{symfony2_project_root}}/shared/app/logs path={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}/app/logs
+
+- name: Create web/uploads symlink
+  file:
+    state=link
+    src={{symfony2_project_root}}/shared/web/uploads path={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}/web/uploads
+
+- name: Create app/config/parameters.yml symlink
+  file:
+    state=link
+    src={{symfony2_project_root}}/shared/app/config/parameters.yml
+    path={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}/app/config/parameters.yml
+
+- name: Run composer install
+  shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}} && {{symfony2_project_php_path}} {{symfony2_project_root}}/composer.phar install {{symfony2_project_composer_opts}}
+
+- name: Dump assets
+  shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}} && {{symfony2_project_php_path}} app/console assetic:dump --env={{symfony2_project_env}} {{symfony2_project_console_opts}}
+
+- name: Create symlink
+  file:
+    state=link
+    src={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}
+    path={{symfony2_project_root}}/current
+
+- name: Migrating database
+  shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}} && {{symfony2_project_php_path}} app/console doctrine:migrations:migrate --no-interaction

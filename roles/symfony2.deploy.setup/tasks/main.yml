@@ -1,0 +1,51 @@
+---
+# tasks file for symfony2 setup
+- name: Register release variable
+  shell: date +%Y%m%d%H%M%S
+  register: symfony2_project_release
+
+- name: Create the release {{symfony2_project_release.stdout}} directory.
+  file:
+    state=directory
+    path={{symfony2_project_root}}/releases/{{symfony2_project_release.stdout}}
+
+- name: Create the shared directory.
+  file:
+    state=directory
+    path={{symfony2_project_root}}/shared
+
+- name: Create the shared/web/uploads directory.
+  file:
+    state=directory
+    path={{symfony2_project_root}}/shared/web/uploads
+    mode=0777
+
+- name: Create the shared/app/logs directory.
+  file:
+    state=directory
+    path={{symfony2_project_root}}/shared/app/logs
+    mode=0755
+
+- name: Create the shared/app/config directory.
+  file:
+    state=directory
+    path={{symfony2_project_root}}/shared/app/config
+
+- name: Ensure log directory
+  action:
+    file dest={{symfony2_project_root}}/shared/app/logs
+    state=directory
+    mode=0777
+
+- name: Generating parameters.yml
+  template:
+      src: parameters.yml
+      dest: "{{ symfony2_project_root }}/shared/app/config/parameters.yml"
+      mode: 0644
+
+- name: Install composer
+  get_url:
+    url=https://getcomposer.org/composer.phar
+    dest={{symfony2_project_root}}/composer.phar
+    mode=0755
+    validate_certs=no

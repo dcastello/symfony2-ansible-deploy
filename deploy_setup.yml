@@ -1,0 +1,9 @@
+# deploy setup
+---
+- hosts: devservers
+  roles:
+    - symfony2.deploy.setup
+
+- hosts: prodservers
+  roles:
+    - symfony2.deploy.setup
