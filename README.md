@@ -6,8 +6,10 @@ Install
 
 Choose a directory to clone the project
 
+```
     cd /path/to/somewhere/deploys
     git clone git@github.com:dcastello/symfony2-ansible-deploy
+```
 
 Configuration
 -------------
@@ -21,7 +23,7 @@ Configuration
 
 2. group_vars variable list
 
-
+```yaml
     symfony2_project_root: '/var/www/dev.example.com'
     symfony2_project_name: 'My Project'
     symfony2_project_repo: 'url to your GIT repo'
@@ -37,17 +39,19 @@ Configuration
     database_user: 'user'
     database_password: 'passwd'
     ansible_ssh_user: user
+```
 
 3. production/staging inventory example
 
-
-    \# staging
+```yaml
+    # staging
     [devservers]
     dev.example.com
     
-    \# production
+    # production
     [prodservers]
     example.com
+```
 
 Task list by role
 ------------------
