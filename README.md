@@ -1,27 +1,24 @@
-Deploying Symfony2 with Ansible
-===============================
+# Deploying Symfony2 with Ansible
 
-Install
--------
+## Installation
 
-Choose a directory to clone the project
+Choose a directory to clone the project. The directory don't need to be inside Symfony structure. 
 
 ```
     cd /path/to/somewhere/deploys
     git clone git@github.com:dcastello/symfony2-ansible-deploy
 ```
 
-Configuration
--------------
+## Configuration
 
-1. Main files
+### Main files
 
  * **production**: Production servers inventory
  * **staging**: Development servers inventory
  * **group_vars/devservers**: List of variable to fill for development environment (Symfony2 and database vars) 
  * **group_vars/prodservers**: List of variable to fill for production environment (Symfony2 and database vars)
 
-2. group_vars variable list
+### group_vars variable list
 
 ```yaml
     symfony2_project_root: '/var/www/dev.example.com'
@@ -41,39 +38,67 @@ Configuration
     ansible_ssh_user: user
 ```
 
-3. production/staging inventory example
+### Production/Staging inventory example
 
 ```yaml
     # staging
     [devservers]
     dev.example.com
-    
+```
+
+```yaml
     # production
     [prodservers]
     example.com
 ```
 
-Task list by role
-------------------
+## Task list by role
 
-1. **Setup** tasks
+### **Setup** tasks
 
+- [x] Generate release directory name
+- [x] Create *release* dir
+- [x] Create *shared* dir
+- [x] Create *shared/web/uploads* dir
+- [x] Create *shared/app/logs* dir
+- [x] Create *shared/app/config* dir
+- [x] Generate parameters.yml from template to *shared/app/config*
+- [x] Install composer
 
-2. **Deploy** tasks
+### **Deploy** tasks
 
-Examples
---------
+- [x] Generate release directory name
+- [x] Pull sources from the repository
+- [x] Set permissions to cache directory
+- [x] Create *app/logs* symlink
+- [x] Create *web/uploads* symlink
+- [x] Create *app/config/parameters.yml* symlink
+- [x] Run composer install
+- [x] Dump assets
+- [x] Migrating database
+- [x] Create symlink to new release
 
-The project has tow main roles: *setup* and *deploy*. **Setup** is used to create the main structure and **deploy** to next deploy. 
+## Examples
 
+The project has two main roles: *setup* and *deploy*. **Setup** is used to create the main structure and **deploy** to next deployments. 
+
+```
     $ ansible-playbook -i <host inventory> <playbook>
+```
     
 To create main structure for development environment:
 
-    $ ansible-playbook -i devserver deploy_setup.yml
+```
+    $ ansible-playbook -i /path/to/devserver /path/to/deploy_setup.yml
+```
     
 Second deploy and next deploys:
 
-    $ ansible-playbook -i devserver deploy.yml
-    
-    
+```
+    $ ansible-playbook -i /path/to/devserver /path/to/deploy.yml
+```
+
+## TODO
+
+- Rollback functionality
+- Limit number of releases available

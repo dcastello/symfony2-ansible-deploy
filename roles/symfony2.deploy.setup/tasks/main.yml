@@ -31,12 +31,6 @@
     state=directory
     path={{symfony2_project_root}}/shared/app/config
 
-- name: Ensure log directory
-  action:
-    file dest={{symfony2_project_root}}/shared/app/logs
-    state=directory
-    mode=0777
-
 - name: Generating parameters.yml
   template:
       src: parameters.yml
