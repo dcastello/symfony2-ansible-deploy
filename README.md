@@ -2,7 +2,7 @@
 
 ## Installation
 
-Choose a directory to clone the project. The directory don't need to be inside Symfony structure. 
+Choose a directory to clone the project. The directory doesn't need to be inside Symfony structure. 
 
 ```
     cd /path/to/somewhere/deploys
